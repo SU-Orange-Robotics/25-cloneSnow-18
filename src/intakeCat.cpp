@@ -5,29 +5,54 @@
 using namespace vex;
 
 bool autoArming = false;
+int lockCount = 0;
 
-void intakeSpin(bool reversed) {
+
+void intakeSpin(bool reversed) { // both spin
     intake.spin(directionType::fwd, intakePow * (reversed ? -0.5 : 0.5), percentUnits::pct);
-    intake2.spin(directionType::fwd, intakePow * (reversed ? -1 : 1), percentUnits::pct);
+    // intake2.spin(directionType::fwd, intakePow * (reversed ? -1 : 1), percentUnits::pct);
     intakeRoller.spin(directionType::fwd, intakePow * (reversed ? -1 : 1), percentUnits::pct);
+
 }
 
-
-
-void intakeSpinPow(double pow) {
-    // intake.spin(directionType::fwd, pow, velocityUnits::pct);
-
-    intake.spin(directionType::fwd, pow, velocityUnits::pct);
-    // intakeRoller.spin(directionType::fwd, intakePow * (reversed ? -1 : 1), percentUnits::pct);
-}
-
-void intakeSpinPow2( double pow){
+void intakeSpinPow( double pow){
     bool reversed = false;
     intake.spin(directionType::fwd, intakePow * (reversed ? -pow: pow), percentUnits::pct);
-    intake2.spin(directionType::fwd, intakePow * (reversed ? -1 : 1), percentUnits::pct);
+    // intake2.spin(directionType::fwd, intakePow * (reversed ? -1 : 1), percentUnits::pct);
     intakeRoller.spin(directionType::fwd, intakePow * (reversed ? -1 : 1), percentUnits::pct);
 
 }
+
+void rollerSpinOnly(double pow){
+    bool reversed = false;
+    intakeRoller.spin(directionType::fwd, intakePow * (reversed ? -pow : pow), percentUnits::pct);
+
+}
+void lockSpin(double pow){
+    lock.spin(directionType::fwd, pow, velocityUnits::pct);
+
+}
+
+void lockStake(double lockDeg, double unlockDeg){ //lock is degree 96
+    if (lockCount%2 ==0){
+        lock.spinToPosition(lockDeg, degrees,true);
+        Controller1.Screen.setCursor(1,1);
+        Controller1.Screen.print("locked  ");
+    }
+    else{
+        lock.spinToPosition(unlockDeg, degrees,true);  
+        Controller1.Screen.setCursor(1,1);
+        Controller1.Screen.print("unlocked");
+    }   
+    lockCount++;
+}
+void unlockStake(double deg){ //303 degree unlock?
+    lock.spinToPosition(deg, degrees,true);
+    // Controller1.Screen.setCursor(1,1);
+    // Controller1.Screen.print("unlocked");
+}
+
+
 
 
 void intakeStop() {

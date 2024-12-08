@@ -115,3 +115,19 @@ int Sensor::ringInStack(){
 
   return 0;
 }
+
+void Sensor::printHue(){
+  Brain.Screen.setCursor(1,1);
+  double value = colorSensor.hue();
+
+  Brain.Screen.print("hue: %.2f", value);
+}
+
+
+void Sensor::ifUp(){
+  colorSensor.gestureEnable() ;
+  
+  // colorSensor.gestureUp(printUp);
+  colorSensor.gestureDisable();
+
+}

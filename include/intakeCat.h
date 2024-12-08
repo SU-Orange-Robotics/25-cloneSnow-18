@@ -9,9 +9,16 @@ void stopAutoArming();
 
 void intakeSpin(bool reversed = false);
 
-void intakeSpinPow2( double pow); // with false reversed decleared inside the function
+void intakeSpinPow( double pow); // with false reversed decleared inside the function
+void rollerSpinOnly(double pow);
+
 
 void intakeStop();
+
+
+void lockSpin(double pow);
+void lockStake(double lockDeg, double unlockDeg);
+void unlockStake(double deg);
 
 void catapultLower();
 

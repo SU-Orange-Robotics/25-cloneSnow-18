@@ -15,13 +15,13 @@ competition Competition;
 //brain is Front, batt back
 
 //15inch
-// motor LeftMotorA(PORT11, gearSetting::ratio18_1, true);//
-// motor LeftMotorB(PORT12, gearSetting::ratio18_1, false);//    // because of gearing, middle one is opposite
-// motor LeftMotorC(PORT13, gearSetting::ratio18_1, true);//
+// motor LeftMotorA(PORT18, gearSetting::ratio18_1, false);//
+// motor LeftMotorB(PORT19, gearSetting::ratio18_1, true);//    // because of gearing, middle one is opposite
+// motor LeftMotorC(PORT20, gearSetting::ratio18_1, false);//
 
-// motor RightMotorA(PORT18, gearSetting::ratio18_1, false); ///
-// motor RightMotorB(PORT19, gearSetting::ratio18_1, true);
-// motor RightMotorC(PORT20, gearSetting::ratio18_1, false);
+// motor RightMotorA(PORT11, gearSetting::ratio18_1, true); ///
+// motor RightMotorB(PORT12, gearSetting::ratio18_1, false);
+// motor RightMotorC(PORT13, gearSetting::ratio18_1, true);
 
 
 // //snow
@@ -50,7 +50,7 @@ motor LeftMotorB(PORT2, gearSetting::ratio18_1, false);//    // because of geari
 motor LeftMotorC(PORT3, gearSetting::ratio18_1, true);//
 
 motor RightMotorA(PORT8, gearSetting::ratio18_1, false); 
-motor RightMotorB(PORT9, gearSetting::ratio18_1, true);//
+motor RightMotorB(PORT9, gearSetting::ratio18_1, true);//  
 motor RightMotorC(PORT10, gearSetting::ratio18_1, false);
 
 
@@ -72,7 +72,11 @@ motor RightMotorC(PORT10, gearSetting::ratio18_1, false);
 motor intake(PORT12, gearSetting::ratio18_1, false);
 motor intake2(PORT13,gearSetting::ratio18_1, false);
 
+motor lock(PORT16,gearSetting::ratio18_1, true );
+
 motor intakeRoller(PORT11, gearSetting::ratio18_1, true);// wheels 
+
+
 
 motor wingL(PORT7, gearSetting::ratio18_1, false);
 motor wingR(PORT14, gearSetting::ratio18_1, true);
@@ -89,6 +93,9 @@ rotation odomRight(PORT2, false);
 rotation odomCenter(PORT3, true);
 
 optical colorSensor(PORT20);
+
+
+
 
 brain Brain;
 controller Controller1(controllerType::primary);

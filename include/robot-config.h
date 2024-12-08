@@ -20,6 +20,8 @@ extern motor RightMotorC;
 extern motor intake;
 extern motor intake2;
 
+extern motor lock;
+
 extern motor intakeRoller;
 
 extern motor wingL;

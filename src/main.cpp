@@ -28,6 +28,10 @@ using namespace vex;
 /*  not every time that the robot is disabled.                               */
 /*---------------------------------------------------------------------------*/
 
+
+
+Sensor sensor;
+
 void pre_auton(void) {
 
   // Current limitting
@@ -36,6 +40,8 @@ void pre_auton(void) {
   catapultB.setMaxTorque(2, currentUnits::amp);
   wingL.setMaxTorque(0.2, currentUnits::amp);
   wingR.setMaxTorque(0.2, currentUnits::amp);
+
+  // lock.setMaxTorque(0.2, currentUnits::amp);
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
@@ -65,7 +71,7 @@ void pre_auton(void) {
 
   intake.setStopping(brakeType::brake);
   intakeRoller.setStopping(brakeType::brake);
-
+  
 }
 
 /*---------------------------------------------------------------------------*/
@@ -94,6 +100,7 @@ void usercontrol(void) {
 
   // use this if we have calibration issues. make sure it prevents driver control for at least 2 seconds
   //imu.calibrate(2000);
+  lock.spinToPosition(28, degrees,true);  
 
   Controller1.ButtonLeft.pressed([](){
     wingL.setMaxTorque(1.25, currentUnits::amp);
@@ -114,6 +121,9 @@ void usercontrol(void) {
     wingL.stop();
     wingL.setMaxTorque(0.2, currentUnits::amp);
   });
+      Controller1.ButtonL1.released([](){
+      lock.setStopping(brakeType::brake);
+    });
 
 
   while (1) {
@@ -134,39 +144,68 @@ void usercontrol(void) {
     // 2 stick arcade
     drive.arcadeDrive(Controller1.Axis3.position(), Controller1.Axis1.position());
 
+
+    Controller1.ButtonA.pressed([](){
+      lockStake(10,300);
+    });
+
+
+
+    Controller1.ButtonB.pressed([](){
+      unlockStake(303);
+    });
+
     //intake
     Controller1.ButtonL1.pressed([](){
-      intakeSpin();
+      // intakeSpin();
+
+      intakeSpinPow(0.7);
     });
+
+    
 
     Controller1.ButtonL1.released([](){
       intakeStop();
     });
 
     Controller1.ButtonL2.pressed([](){
-      intakeSpin(true);
+      intakeSpinPow(-0.7);
     });
 
     Controller1.ButtonL2.released([](){
       intakeStop();
     });
 
-    Controller1.ButtonA.pressed([](){
-      wings.toggleWings();
-    });
-
-    Controller1.ButtonX.pressed([](){
-      drive.toggleInvertedDrive();
-    });
-
-    // catapult
     Controller1.ButtonR1.pressed([](){
-      catapultLaunch();
-      // these three lines here are what does the automatic arming of the catapult.
-      wait(50, msec);
-      waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
-      catapultArm();
+      rollerSpinOnly(0.7);
     });
+    Controller1.ButtonR2.pressed([](){
+      rollerSpinOnly(-0.7);
+    });
+    Controller1.ButtonR1.released([](){
+      intakeStop();
+    });
+    Controller1.ButtonR2.released([](){
+      intakeStop();
+    });
+
+
+
+
+
+
+
+
+
+
+    // // catapult
+    // Controller1.ButtonR1.pressed([](){
+    //   catapultLaunch();
+    //   // these three lines here are what does the automatic arming of the catapult.
+    //   wait(50, msec);
+    //   waitUntil(getCatAccel() <= 0.1); // <-- might be blocking, which isnt desirable
+    //   catapultArm();
+    // });
 
     // // fliper
     // double flipperSpeed = 0;
@@ -240,6 +279,7 @@ int main() {
   // Run the pre-autonomous function.
   pre_auton();
   Controller1.Screen.clearScreen();
+  Brain.Screen.clearScreen();
 
 
 
@@ -248,9 +288,9 @@ int main() {
   // Controller1.Screen.setCursor(1,1);
   // Controller1.Screen.print("turning finish");
     colorSensor.setLightPower(50, percent);
-    Controller1.Screen.setCursor(1,1);
+    // Controller1.Screen.setCursor(1,1);
 
-    Controller1.Screen.print(colorSensor.color());
+    // Controller1.Screen.print(colorSensor.color());
 
     wait(2000, msec);
 
@@ -259,8 +299,12 @@ int main() {
   // Prevent main from exiting with an infinite loop.
   while (true) {
 
-  // optical::rgbc value = colorSensor.getRgb();
 
+
+ 
+
+
+  // sensor.printHue();
 
 
   //   // updateCatAccel(0.02);

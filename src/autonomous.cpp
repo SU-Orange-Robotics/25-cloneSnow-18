@@ -384,24 +384,22 @@ void intakeRing(){
   
 }
 
-void loadRing (double pow){
+void loadAndHoldRing (double pow){    // red hue <20, and blue hue >140
   colorSensor.gestureEnable() ;
-      Controller1.Screen.setCursor(1,1);
-  Controller1.Screen.print("object moving upppppppp");
-  // while (! colorSensor.isNearObject()){
-  //   Controller1.Screen.setCursor(1,1);
-  //     Controller1.Screen.print("no object");
+  Controller1.Screen.setCursor(1,1);
+  // Controller1.Screen.print("object moving upppppppp");
+  while ( colorSensor.hue()>40){
+    Controller1.Screen.setCursor(1,1);
+    Controller1.Screen.print("not in place. Hue:%.1f", colorSensor.hue());
 
 
-  //   intakeSpinPow2(pow);
-  // }
-  // Controller1.Screen.clearScreen();
-  // Controller1.Screen.print("near object");
+    intakeSpinPow(pow);
+  }
+  intakeStop();
+  Controller1.Screen.setCursor(1,1);
+  Controller1.Screen.print("ring loaded. Hue:%.1f         ", colorSensor.hue());
 
-  //   intakeStop();
-  colorSensor.gestureUp(intakeStop);
   colorSensor.gestureDisable();
-
 }
 
 
@@ -426,7 +424,7 @@ void pickRing(){
   wait(1000, msec);
 
   driveForwardTimed(50, 0.5);
-  loadRing(0.7);
+  loadAndHoldRing(0.7);
 
   Controller1.Screen.setCursor(2,1);
   Controller1.Screen.print("ring loaded");
@@ -441,19 +439,49 @@ void pickRing(){
 
 
 
-
+void addRing(double pow, double time){
+  intakeSpinPow(pow);
+  wait(time, sec);
+  intake.stop();
+}
 
 void autonomous(void) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
   
-      Controller1.Screen.clearScreen();
+  Controller1.Screen.clearScreen();
+  // lock.spinToPosition(90,degrees, false);
+  driveForwardTimed(0.5,2);
+  wait(500, msec);
+  
+  loadAndHoldRing(0.8);  
+  driveForwardTimed(0.6,2);
+  imuTurnTest(20, 180);
+
+  driveForwardTimed(-0.6,2);
+  lock.spinToPosition(0,degrees, false);
+  addRing(0.9,3);
+  
+
 
   // intakeRing();
   // loadRing (0.4);
   // intakeTimed( 2,0.3);
-pickRing();
+  // pickRing();
+
+  // forward(); 
+  //front ring pick up and load to arm
+  
+  // loadAndHoldRing(0.7);
+
+
+  
+
+
+  //second corner ring roll load;
+  
+
 
 
 

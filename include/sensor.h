@@ -26,7 +26,8 @@ public:
 
     int ringCountDist(); // number of ring in stake base on distant sensor
     
-
+    void ifUp();
+    void printHue();
     
 };
 
